@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek Chat</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="deepseek-container">
+    <!-- Заголовок чату -->
+    <div class="chat-header">
+      <div class="header-content">
+        <div class="model-badge">
+          <div class="model-icon">🤖</div>
+          <span class="model-name">DeepSeek</span>
+          <div class="model-version">Latest Version</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Область повідомлень -->
+    <div class="messages-area">
+      <!-- Привітальне повідомлення -->
+      <div class="message-group">
+        <div class="message ai-message">
+          <div class="message-avatar">
+            <div class="avatar-icon">🤖</div>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">DeepSeek</span>
+              <div class="message-actions">
+                <button class="action-btn copy-btn" title="Копіювати">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="message-text">
+              <p>Привіт! Я DeepSeek, велика мовна модель, створена компанією DeepSeek. Я рада допомогти тобі з різними
+                завданнями!</p>
+              <br>
+              <p><strong>Мої можливості:</strong></p>
+              <ul>
+                <li>💬 Відповіді на запитання та консультації</li>
+                <li>📝 Написання та редагування тексту</li>
+                <li>🔢 Рішення задач та аналіз даних</li>
+                <li>💻 Допомога з програмуванням</li>
+                <li>🌐 Пошук інформації (якщо увімкнено веб-пошук)</li>
+              </ul>
+              <br>
+              <p>Чим можу допомогти тобі сьогодні? 😊</p>
+            </div>
+            <div class="message-footer">
+              <span class="message-time">Сьогодні, 14:30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Питання користувача -->
+      <div class="message-group">
+        <div class="message user-message">
+          <div class="message-avatar">
+            <div class="avatar-icon">👤</div>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">Користувач</span>
+            </div>
+            <div class="message-text">
+              <p>Розкажи детальніше про свою архітектуру та технічні особливості</p>
+            </div>
+            <div class="message-footer">
+              <span class="message-time">14:32</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Відповідь AI -->
+      <div class="message-group">
+        <div class="message ai-message">
+          <div class="message-avatar">
+            <div class="avatar-icon">🤖</div>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">DeepSeek</span>
+              <div class="message-actions">
+                <button class="action-btn copy-btn" title="Копіювати">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="message-text">
+              <p>Звісно! Ось технічні деталі моєї архітектури:</p>
+              <br>
+
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">Architecture Overview</span>
+                  <button class="copy-code-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z"
+                        stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </button>
+                </div>
+                <pre><code>class DeepSeekArchitecture:
+    def __init__(self):
+        self.model_type = "Transformer-based"
+        self.parameters = "67B" 
+        self.context_length = 128000 tokens
+        self.architecture = "Decoder-only"
+        
+    def features(self):
+        return {
+            "training_data": "Massive multilingual corpus",
+            "modalities": ["text", "code", "reasoning"],
+            "special_tokens": 128000,
+            "layers": 80,
+            "attention_heads": 64,
+            "hidden_size": 8192
+        }</code></pre>
+              </div>
+              <br>
+
+              <p><strong>Ключові технічні характеристики:</strong></p>
+              <br>
+
+              <div class="tech-specs">
+                <div class="spec-item">
+                  <span class="spec-label">🏗️ Архітектура:</span>
+                  <span class="spec-value">Transformer Decoder-only</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">🧮 Параметри:</span>
+                  <span class="spec-value">67 мільярдів</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">📚 Контекст:</span>
+                  <span class="spec-value">128K токенів</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">🌐 Мови:</span>
+                  <span class="spec-value">Багатомовна підтримка</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">💻 Кодування:</span>
+                  <span class="spec-value">Підтримка 50+ мов програмування</span>
+                </div>
+              </div>
+              <br>
+
+              <p>Я також підтримую функцію веб-пошуку (коли вона активована), що дозволяє мені отримувати актуальну
+                інформацію з інтернету.</p>
+            </div>
+            <div class="message-footer">
+              <span class="message-time">14:33</span>
+              <div class="feedback-buttons">
+                <button class="feedback-btn like-btn" title="Подобається">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M14 10H19L17 21H7V14M7 14V7C7 5.89543 7.89543 5 9 5H10M7 14H4C2.89543 14 2 13.1046 2 12V9C2 7.89543 2.89543 7 4 7H7M10 5C10 3.89543 10.8954 3 12 3C13.1046 3 14 3.89543 14 5V7H10V5Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+                <button class="feedback-btn dislike-btn" title="Не подобається">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M10 14H5L7 3H17V10M17 10V17C17 18.1046 16.1046 19 15 19H14M17 10H20C21.1046 10 22 10.8954 22 12V15C22 16.1046 21.1046 17 20 17H17M14 19C14 20.1046 13.1046 21 12 21C10.8954 21 10 20.1046 10 19V17H14V19Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Питання з кодом -->
+      <div class="message-group">
+        <div class="message user-message">
+          <div class="message-avatar">
+            <div class="avatar-icon">👤</div>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">Користувач</span>
+            </div>
+            <div class="message-text">
+              <p>Напиши приклад коду на Python для обробки даних з використанням pandas</p>
+            </div>
+            <div class="message-footer">
+              <span class="message-time">14:35</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Відповідь з кодом -->
+      <div class="message-group">
+        <div class="message ai-message">
+          <div class="message-avatar">
+            <div class="avatar-icon">🤖</div>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">DeepSeek</span>
+              <div class="message-actions">
+                <button class="action-btn copy-btn" title="Копіювати">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="message-text">
+              <p>Звісно! Ось приклад коду на Python для обробки даних з використанням pandas:</p>
+              <br>
+
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">Python</span>
+                  <button class="copy-code-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z"
+                        stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </button>
+                </div>
+                <pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime
+
+class DataProcessor:
+    def __init__(self, data_path):
+        self.data_path = data_path
+        self.df = None
+    
+    def load_data(self):
+        """Завантаження даних з CSV файлу"""
+        try:
+            self.df = pd.read_csv(self.data_path)
+            print(f"✅ Дані успішно завантажено: {len(self.df)} рядків")
+            return True
+        except Exception as e:
+            print(f"❌ Помилка завантаження: {e}")
+            return False
+    
+    def clean_data(self):
+        """Очищення та підготовка даних"""
+        # Видалення дублікатів
+        self.df = self.df.drop_duplicates()
+        
+        # Заповнення пропущених значень
+        numeric_columns = self.df.select_dtypes(include=[np.number]).columns
+        self.df[numeric_columns] = self.df[numeric_columns].fillna(0)
+        
+        # Конвертація дат
+        date_columns = self.df.select_dtypes(include=['object']).columns
+        for col in date_columns:
+            if 'date' in col.lower():
+                self.df[col] = pd.to_datetime(self.df[col], errors='coerce')
+        
+        return self.df
+    
+    def analyze_data(self):
+        """Аналіз даних"""
+        analysis = {
+            'total_rows': len(self.df),
+            'total_columns': len(self.df.columns),
+            'missing_values': self.df.isnull().sum().sum(),
+            'data_types': self.df.dtypes.to_dict()
+        }
+        
+        # Статистика для числових колонок
+        numeric_stats = self.df.describe()
+        
+        return analysis, numeric_stats
+
+# Приклад використання
+if __name__ == "__main__":
+    processor = DataProcessor('data.csv')
+    
+    if processor.load_data():
+        clean_df = processor.clean_data()
+        analysis, stats = processor.analyze_data()
+        
+        print("📊 Аналіз даних:")
+        for key, value in analysis.items():
+            print(f"  {key}: {value}")</code></pre>
+              </div>
+              <br>
+
+              <p>Цей код демонструє:</p>
+              <ul>
+                <li>📥 Завантаження даних з CSV файлу</li>
+                <li>🧹 Очищення та попередню обробку даних</li>
+                <li>📊 Базовий аналіз та статистику</li>
+                <li>⚙️ Об'єктно-орієнтований підхід</li>
+              </ul>
+            </div>
+            <div class="message-footer">
+              <span class="message-time">14:36</span>
+              <div class="feedback-buttons">
+                <button class="feedback-btn like-btn" title="Подобається">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M14 10H19L17 21H7V14M7 14V7C7 5.89543 7.89543 5 9 5H10M7 14H4C2.89543 14 2 13.1046 2 12V9C2 7.89543 2.89543 7 4 7H7M10 5C10 3.89543 10.8954 3 12 3C13.1046 3 14 3.89543 14 5V7H10V5Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+                <button class="feedback-btn dislike-btn" title="Не подобається">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M10 14H5L7 3H17V10M17 10V17C17 18.1046 16.1046 19 15 19H14M17 10H20C21.1046 10 22 10.8954 22 12V15C22 16.1046 21.1046 17 20 17H17M14 19C14 20.1046 13.1046 21 12 21C10.8954 21 10 20.1046 10 19V17H14V19Z"
+                      stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
