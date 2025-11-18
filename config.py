@@ -15,10 +15,19 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # Database
 DATABASE_NAME = "ai_chat_bot.db"
 
-# Available AI Models
-AVAILABLE_AI = {
-    "gemini": "Google Gemini",
-    "chatgpt": "ChatGPT", 
-    "deepseek": "DeepSeek",
-    "groq": "Groq"
-}
+# Динамічно визначаємо доступні AI на основі наявних API ключів
+def get_available_ai():
+    available = {}
+    
+    if GEMINI_API_KEY:
+        available["gemini"] = "Google Gemini"
+    if OPENAI_API_KEY:
+        available["chatgpt"] = "ChatGPT"
+    if DEEPSEEK_API_KEY:
+        available["deepseek"] = "DeepSeek"
+    if GROQ_API_KEY:
+        available["groq"] = "Groq"
+    
+    return available
+
+AVAILABLE_AI = get_available_ai()

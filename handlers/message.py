@@ -13,8 +13,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         session = UserSession.get(UserSession.user_id == user_id)
         ai_service = session.current_ai
         
+        # Перевірка чи доступний обраний AI
+        if not AIProviderFactory.is_provider_available(ai_service):
+            await update.message.reply_text(
+                f"❌ {ai_service} наразі недоступний. Будь ласка, оберіть інший AI через /start"
+            )
+            return
+        
         # Генерація відповіді через обраний AI
         provider = AIProviderFactory.create_provider(ai_service)
+        if provider is None:
+            await update.message.reply_text(
+                f"❌ Помилка ініціалізації {ai_service}. Спробуйте інший AI."
+            )
+            return
+            
         response = await provider.generate_response(user_message)
         
         # Збереження розмови в БД
@@ -45,6 +58,11 @@ async def handle_forwarding(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_ai = query.data.replace("forward_", "")
     
     try:
+        # Перевірка чи доступний цільовий AI
+        if not AIProviderFactory.is_provider_available(target_ai):
+            await query.answer(f"❌ {target_ai} недоступний для пересилання")
+            return
+        
         # Отримання сесії з БД
         session = UserSession.get(UserSession.user_id == user_id)
         
@@ -61,6 +79,10 @@ async def handle_forwarding(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Генерація відповіді через новий AI
         provider = AIProviderFactory.create_provider(target_ai)
+        if provider is None:
+            await query.message.reply_text(f"❌ Помилка ініціалізації {target_ai}")
+            return
+            
         new_response = await provider.generate_response(prompt)
         
         # Збереження нової розмови в БД
@@ -79,7 +101,7 @@ async def handle_forwarding(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Відправка відповіді
         await query.message.reply_text(
-            f"🔁 **Переслано з {session.current_ai} до {target_ai}:**\n\n{new_response}",
+            f"🔁 **Переслано до {target_ai}:**\n\n{new_response}",
             reply_markup=get_forward_keyboard(target_ai)
         )
         
