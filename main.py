@@ -1,69 +1,57 @@
-import logging
+#!/usr/bin/env python3
+"""
+Telegram Multi-AI Bot для Railway
+"""
+
 import os
 import sys
-import subprocess
+import logging
 
-def check_dependencies():
-    """Перевіряє та встановлює необхідні бібліотеки"""
-    required_packages = {
-        'python-telegram-bot': 'telegram',
-        'google-generativeai': 'google.generativeai',
-        'openai': 'openai',
-        'python-dotenv': 'dotenv',
-        'peewee': 'peewee',
-        'groq': 'groq',
-        'requests': 'requests'
-    }
+# Додаємо поточну директорію до Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
+
+# Налаштування логування для Railway
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO,
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+def setup_environment():
+    """Налаштовує середовище та перевіряє залежності"""
+    print("🔧 Налаштування середовища Railway...")
     
-    missing_packages = []
+    # Перевірка та імпорт залежностей
+    dependencies = [
+        ('telegram.ext', 'python-telegram-bot'),
+        ('google.generativeai', 'google-generativeai'),
+        ('openai', 'openai'),
+        ('dotenv', 'python-dotenv'),
+        ('peewee', 'peewee'),
+        ('groq', 'groq')
+    ]
     
-    for package, import_name in required_packages.items():
+    missing_deps = []
+    for module, package in dependencies:
         try:
-            if import_name == 'telegram':
-                from telegram import __version__
-            else:
-                __import__(import_name)
-            print(f"✅ {package} встановлено")
-        except ImportError:
-            missing_packages.append(package)
-            print(f"❌ {package} відсутній")
+            __import__(module.split('.')[0])
+            print(f"✅ {package} завантажено")
+        except ImportError as e:
+            missing_deps.append(package)
+            print(f"❌ {package} відсутній: {e}")
     
-    return missing_packages
-
-def install_packages(packages):
-    """Встановлює відсутні пакети"""
-    if not packages:
-        return True
-        
-    print(f"\n📦 Встановлення відсутніх пакетів: {', '.join(packages)}")
-    try:
-        for package in packages:
-            if package == 'python-telegram-bot':
-                subprocess.check_call([sys.executable, "-m", "pip", "install", "python-telegram-bot==20.7"])
-            else:
-                subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-            print(f"✅ {package} успішно встановлено")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Помилка встановлення {package}: {e}")
+    if missing_deps:
+        logger.error(f"Відсутні залежності: {', '.join(missing_deps)}")
         return False
+    
+    return True
 
-def main():
-    """Основна функція з автоматичною установкою залежностей"""
-    print("🔍 Перевірка залежностей...")
-    
-    # Перевірка та встановлення відсутніх пакетів
-    missing_packages = check_dependencies()
-    
-    if missing_packages:
-        print(f"\n⚠️  Відсутні {len(missing_packages)} пакетів")
-        if not install_packages(missing_packages):
-            print("\n❌ Не вдалося встановити всі залежності")
-            print("💡 Спробуйте встановити вручну:")
-            print("   pip install python-telegram-bot==20.7 google-generativeai openai python-dotenv peewee groq requests")
-            return
-    
-    # Тепер імпортуємо всі модулі
+def import_project_modules():
+    """Імпортує модулі проекту"""
     try:
         from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
         from config import TELEGRAM_BOT_TOKEN, AVAILABLE_AI
@@ -73,38 +61,47 @@ def main():
         from handlers.message import handle_message, handle_forwarding
         from ai_providers import AIProviderFactory
         
-        print("✅ Всі залежності завантажено успішно!")
-        
+        print("✅ Всі модулі проекту завантажено")
+        return TELEGRAM_BOT_TOKEN, AVAILABLE_AI
     except ImportError as e:
-        print(f"❌ Помилка імпорту після встановлення: {e}")
-        return
+        logger.error(f"Помилка імпорту модулів проекту: {e}")
+        return None, None
 
-    # Додаємо поточну директорію до Python path
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    sys.path.insert(0, current_dir)
-
-    # Налаштування логування
-    logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
-    )
-
-    # Перевірка токена бота
+def main():
+    """Основна функція запуску"""
+    print("=" * 60)
+    print("🚂 Запуск на Railway")
+    print("🤖 Telegram Multi-AI Bot")
+    print("=" * 60)
+    
+    # Налаштування середовища
+    if not setup_environment():
+        sys.exit(1)
+    
+    # Імпорт модулів проекту
+    TELEGRAM_BOT_TOKEN, AVAILABLE_AI = import_project_modules()
+    if not TELEGRAM_BOT_TOKEN:
+        sys.exit(1)
+    
+    # Перевірка токена
     if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN == "your_telegram_bot_token_here":
-        print("\n❌ TELEGRAM_BOT_TOKEN не налаштовано!")
-        print("📝 Створіть файл .env у корені проекту з вмістом:")
-        print("TELEGRAM_BOT_TOKEN=ваш_токен_бота")
-        print("\n🔧 Отримайте токен від @BotFather в Telegram")
-        return
-
+        logger.error("TELEGRAM_BOT_TOKEN не налаштовано")
+        print("\n🔧 Налаштуйте змінні оточення в Railway:")
+        print("   TELEGRAM_BOT_TOKEN=ваш_токен_бота")
+        print("   GEMINI_API_KEY=ваш_ключ_gemini")
+        print("   OPENAI_API_KEY=ваш_ключ_openai")
+        print("   DEEPSEEK_API_KEY=ваш_ключ_deepseek")
+        print("   GROQ_API_KEY=ваш_ключ_groq")
+        sys.exit(1)
+    
     # Ініціалізація бази даних
     try:
         create_tables()
-        print("✅ База даних ініціалізована")
+        logger.info("База даних ініціалізована")
     except Exception as e:
-        print(f"❌ Помилка ініціалізації БД: {e}")
-        return
-
+        logger.error(f"Помилка ініціалізації БД: {e}")
+        # Продовжуємо, оскільки бот може працювати без БД
+    
     # Запуск бота
     try:
         application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
@@ -115,16 +112,21 @@ def main():
         application.add_handler(CallbackQueryHandler(handle_forwarding, pattern="^forward_"))
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
         
-        print("\n" + "="*50)
-        print("🤖 Бот успішно запущений!")
+        print("\n" + "=" * 50)
+        print("✅ Бот успішно запущений на Railway!")
         print("📍 Використовуйте /start в Telegram")
-        print("🛑 Для зупинки натисніть Ctrl+C")
-        print("="*50)
+        print("📊 Доступні AI:", ", ".join(AVAILABLE_AI.values()) if AVAILABLE_AI else "жоден")
+        print("=" * 50 + "\n")
         
-        application.run_polling()
+        # Запуск полінгу
+        application.run_polling(
+            drop_pending_updates=True,
+            allowed_updates=["message", "callback_query"]
+        )
         
     except Exception as e:
-        print(f"❌ Помилка запуску бота: {e}")
+        logger.error(f"Помилка запуску бота: {e}")
+        print(f"💡 Можливі причини: {e}")
 
 if __name__ == "__main__":
     main()
